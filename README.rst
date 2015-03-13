@@ -143,6 +143,7 @@ API Reference
 **Arguments:**
 
   * ``filename`` - mandatory. The complete path to the file on the S3 bucket, including the file extension if any, and excluding the bucket name. It must start with a ``/``.
+  * ``mime_type`` - optional. The file MIME type.
   * ``output`` - optional. To specify the output type preferred. When not provided output is the base64 encoded SHA1 checksum of the request. Other output types are:
 
     * ``http_header``: Returns the value to be used with the ``Authorization`` HTTP header.
@@ -160,7 +161,7 @@ API Reference
 
   >>> import S3SignedURL
   >>> s3auth = S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
-  >>> signature = s3auth.sign_put_file('/vacation 2006/Paris/0001.png')
+  >>> signature = s3auth.sign_put_file('/vacation 2006/Paris/0001.png', mime_type='image/png')
 
 .. code-block:: python
 
@@ -264,7 +265,8 @@ API Reference
 Test
 ----
 
-Unit tests and integration tests are available in the ``/test`` folder.
+Testing is set up using `pytest <http://pytest.org/>`_ and coverage is handled with the `pytest-cov <https://pypi.python.org/pypi/pytest-cov>`_ plugin.
+Unit tests and integration tests are available in the ``/tests`` folder.
 
 To test this library simply use:
 
@@ -283,7 +285,6 @@ In order to prevent this, it is crucial to both use a short interval after which
 
 See Also
 --------
-
 
 Official documentation about the authenticating mechanism from AWS S3:
 
