@@ -26,10 +26,11 @@ Example to authenticate a ``GET /filename.png`` request:
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
   >>> signature = s3auth.sign_get_file('/filename.png')
 
-The variable ``signature`` now hold the base64 encoded SHA1 checksum S3 will use to authenticate your request.
+The variable ``signature`` now holds the base64 encoded SHA1 checksum S3 will use to authenticate your request.
 
 From there you can let your user request the file operation directly to S3, providing the signature either via HTTP header or query string.
 
@@ -38,7 +39,8 @@ If using the HTTP ``Authorization`` header, specify the ``http_header`` output t
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
   >>> http_auth_value = s3auth.sign_get_file('filename.png', output='http_header')
   >>> print http_auth_value
   'AWS <AWS_KEY>:<signature>'
@@ -53,12 +55,14 @@ If using the query string version, specify the ``query_string`` output type, to 
 
   >>> from s3signedauth import s3signedauth
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
-  >>> auth_query_string = s3auth.sign_get_file('filename.png', output='query_string', bucket_name='pouet')
+  >>> auth_query_string = s3auth.sign_get_file('filename.png', output='query_string',
+  ...                                           bucket_name='pouet')
   >>> print auth_query_string
   '<uri-encoded-signature>'
   >>> # Example using requests (http://docs.python-requests.org)
   >>> import requests
-  >>> payload = {'Signature': auth_query_string, 'AWSAccessKeyId': '<Your-AWS-KEY>', 'Expires': '<UNIX-epoch-timestamp>'}
+  >>> payload = {'Signature': auth_query_string, 'AWSAccessKeyId': '<Your-AWS-KEY>',
+  ...            'Expires': '<UNIX-epoch-timestamp>'}
   >>> requests.get('https://bucket-name.s3.amazonaws.com/filename.png', params=payload)
 
 
@@ -92,7 +96,8 @@ An object providing methods to sign requests to S3 endpoints.
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
 
 
 ``.sign_get_file()``
@@ -117,7 +122,8 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
   >>> signature = s3auth.sign_get_file('/vacation 2006/Paris/0001.png')
 
 .. code-block:: python
@@ -125,7 +131,7 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> from s3signedauth import s3signedauth
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> http_auth_value = s3auth.sign_get_file('/vacation 2006/Paris/0001.png',
-                                             bucket_name='pouet', output='http_header')
+  ...                                        bucket_name='pouet', output='http_header')
 
 .. code-block:: python
 
@@ -133,8 +139,9 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> import datetime
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> timestamp = datetime.datetime.now()
-  >>> http_auth_value = s3auth.sign_get_file('/vacation 2006/Paris/0001.png', bucket_name='pouet',
-                                             output='http_header', date=timestamp)
+  >>> http_auth_value = s3auth.sign_get_file('/vacation 2006/Paris/0001.png',
+  ...                                        bucket_name='pouet',
+  ...                                        output='http_header', date=timestamp)
 
 
 ``.sign_put_file()``
@@ -160,15 +167,17 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
-  >>> signature = s3auth.sign_put_file('/vacation 2006/Paris/0001.png', mime_type='image/png')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
+  >>> signature = s3auth.sign_put_file('/vacation 2006/Paris/0001.png',
+  ...                                  mime_type='image/png')
 
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> http_auth_value = s3auth.sign_put_file('/vacation 2006/Paris/0001.png',
-                                             bucket_name='pouet', output='http_header')
+  ...                                        bucket_name='pouet', output='http_header')
 
 .. code-block:: python
 
@@ -176,8 +185,9 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> import datetime
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> timestamp = datetime.datetime.now()
-  >>> http_auth_value = s3auth.sign_put_file('/vacation 2006/Paris/0001.png', bucket_name='pouet',
-                                             output='http_header', date=timestamp)
+  >>> http_auth_value = s3auth.sign_put_file('/vacation 2006/Paris/0001.png',
+  ...                                        bucket_name='pouet',
+  ...                                        output='http_header', date=timestamp)
 
 ``.sign_delete_file()``
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -201,7 +211,8 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
   >>> signature = s3auth.sign_delete_file('/vacation 2006/Paris/0001.png')
 
 .. code-block:: python
@@ -209,7 +220,7 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> from s3signedauth import s3signedauth
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> http_auth_value = s3auth.sign_delete_file('/vacation 2006/Paris/0001.png',
-                                                bucket_name='pouet', output='http_header')
+  ...                                           bucket_name='pouet', output='http_header')
 
 .. code-block:: python
 
@@ -217,8 +228,9 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> import datetime
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> timestamp = datetime.datetime.now()
-  >>> http_auth_value = s3auth.sign_delete_file('/vacation 2006/Paris/0001.png', bucket_name='pouet',
-                                                output='http_header', date=timestamp)
+  >>> http_auth_value = s3auth.sign_delete_file('/vacation 2006/Paris/0001.png',
+  ...                                           bucket_name='pouet',
+  ...                                           output='http_header', date=timestamp)
 
 ``.sign_list_dir()``
 ~~~~~~~~~~~~~~~~~~~~
@@ -242,7 +254,8 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
 .. code-block:: python
 
   >>> from s3signedauth import s3signedauth
-  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy', BUCKET_NAME='pouet')
+  >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy',
+  ...                                   BUCKET_NAME='pouet')
   >>> signature = s3auth.sign_list_dir('/vacation 2006')
 
 .. code-block:: python
@@ -250,7 +263,7 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> from s3signedauth import s3signedauth
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> http_auth_value = s3auth.sign_list_dir('/vacation 2006', bucket_name='pouet',
-                                             output='http_header')
+  ...                                        output='http_header')
 
 .. code-block:: python
 
@@ -259,7 +272,7 @@ By default the method returns the raw base64 encoded SHA1 checksum. Output can b
   >>> s3auth = s3signedauth.S3SignedURL(AWS_KEY='xxx', AWS_SECRET_KEY='yyy')
   >>> timestamp = datetime.datetime.now()
   >>> http_auth_value = s3auth.sign_list_dir('/vacation 2006', bucket_name='pouet',
-                                             output='http_header', date=timestamp)
+  ...                                        output='http_header', date=timestamp)
 
 
 Tests
